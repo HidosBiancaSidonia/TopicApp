@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class Topic implements Serializable {
-    private static final long serializeVersionUID = 1L;
+    private static final long serialVersionUID = 6529685098267757690L;
     private Integer id_topic;
     private String topicName;
 
@@ -34,8 +34,8 @@ public class Topic implements Serializable {
 
     @Override
     public String toString() {
-        return "Topic{" +
-                "topicName='" + topicName + '\'' +
-                '}';
+        int nr=0;
+
+        return "\r\n"  + nr++ + ". " + topicName +" \r\n" ;
     }
 }

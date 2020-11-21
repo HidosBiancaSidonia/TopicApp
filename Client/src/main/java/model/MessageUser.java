@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class MessageUser implements Serializable {
-    private static final long serializeVersionUID = 1L;
+    private static final long serialVersionUID = 6529685098267757690L;
     private String message;
     private String user;
 
@@ -30,8 +30,6 @@ public class MessageUser implements Serializable {
 
     @Override
     public String toString() {
-        return "User: "  + user + '\'' +
-                "Message: '" + message + '\'' +
-                "/n";
+        return "\r\nUser: "  + user + " Message: " + message +" \r\n" ;
     }
 }

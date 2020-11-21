@@ -1,10 +1,14 @@
 package client;
 
+import model.MessageUser;
+import model.Topic;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Client implements Serializable {
@@ -43,14 +47,45 @@ public class Client implements Serializable {
         }
     }
 
+    private static void doRegister(String username, String password) throws IOException {
+        out.writeObject("register");
+        if (!username.isEmpty() && !password.isEmpty()) {
+            try {
+                out.writeObject(username);
+                out.writeObject(password);
+                String message = (String) in.readObject();
+                System.out.println(message);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void showAllTopics(int i) throws IOException, ClassNotFoundException {
+        out.writeObject("showAllTopics");
+        if(i==1){
+        Object obj =  in.readObject();
+        }
+        ArrayList<Topic> topics = (ArrayList<Topic>) in.readUnshared();
+        System.out.println("\nTopics:");
+        int nr = 0;
+        for (Topic topic : topics) {
+            nr++;
+            System.out.println(nr + ". " + topic.getTopicName());
+        }
+
+        System.out.println();
+    }
+
     private static String showTopic(Integer id) throws IOException, ClassNotFoundException {
         out.writeObject("showTopic");
         out.writeObject(id.toString());
 
         try {
-            Object user = in.readObject();
+            //Object user =  in.readObject();
             String message = (String) in.readObject();
-            return  message;
+
+                return message;
         }catch (IOException  e){
             e.printStackTrace();
         }
@@ -62,7 +97,6 @@ public class Client implements Serializable {
         out.writeObject(id.toString());
         try {
             String message = (String) in.readObject();
-            System.out.println(message);
             return message;
         }catch (IOException | ClassNotFoundException e){
             e.printStackTrace();
@@ -74,22 +108,21 @@ public class Client implements Serializable {
         out.writeObject("showMessages");
         out.writeObject(id.toString());
 
-        String message = (String) in.readObject();
-        if (message.equals("There are no posts in this topic.")) {
-            System.out.println(message);
+        ArrayList<MessageUser> message = (ArrayList<MessageUser>) in.readObject();
+        if (message.isEmpty()) {
+            System.out.println("There are no posts in this topic.");
         } else {
-            System.out.println(message);
+            for (MessageUser messageUser: message) {
+                System.out.println("User: "+messageUser.getUser()+" - Message: "+messageUser.getMessage());
+            }
         }
     }
 
-    /**
-     * Function that creates the menu, the choices in the menu and that calls the functions for each option in the menu
-     */
     public static void menu() {
-        Menu mainMenu = new Menu("Main");
-        Menu subMenuTopics = new Menu("Topics");
-        Menu subMenuSubscribe = new Menu("Do you want to subscribe to this topic?");
-        Menu subMenuTopicMessage = new Menu("");
+        Menu mainMenu = new Menu("\nChoose an option");
+        Menu subMenuTopics = new Menu("I want to :");
+        Menu subscribeTopic = new Menu("Do you want to subscribe to this topic?");
+        Menu subsubMenuTopics = new Menu("\nI want to :");
 
         mainMenu.putAction("Log in", () -> {
             System.out.println("Please enter username and password.");
@@ -105,9 +138,24 @@ public class Client implements Serializable {
                     System.out.println("Wrong credentials. Please try again!");
                     activateMenu(mainMenu);
                 } else if (message.equals("Log in successful.")) {
+                    showAllTopics(1);
                     activateMenu(subMenuTopics);
                 }
             } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+
+        mainMenu.putAction("Register", () -> {
+            System.out.println("Please enter username and password.");
+            System.out.println("Username: ");
+            username = scanner.next();
+            System.out.println("Password: ");
+            password = scanner.next();
+            try {
+                doRegister(username, password);
+                activateMenu(mainMenu);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
@@ -120,177 +168,32 @@ public class Client implements Serializable {
             }
         });
 
-        subMenuTopics.putAction("Sport", () -> {
+        subMenuTopics.putAction("See all the posts in a topic", () -> {
             try {
-                String message = showTopic(1);
-                if(message.equals("Acces")){
-                    activateMenu(subMenuTopicMessage);
-                }else if(message.equals("You are not subscribed to this topic!")){
-                    System.out.println("You are not subscribed to this topic!");
-                    id_topic=1;
-                    activateMenu(subMenuSubscribe);
+                System.out.println("Enter the number of the topic you want to see all the posts: ");
+                id_topic = scanner.nextInt();
+                String message = showTopic(id_topic);
+                if(message.equals("The number you entered is invalid")){
+                    System.out.println(message);
+                    showAllTopics(2);
+                    activateMenu(subMenuTopics);
+                } else if(message.equals("Acces")){
+                    showMessages(id_topic);
+                    activateMenu(subsubMenuTopics);
+                } else if(message.equals("You are not subscribed to this topic!")){
+                    System.out.println(message);
+                    activateMenu(subscribeTopic);
                 }
-
-
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
 
-        subMenuTopics.putAction("Movies", () -> {
-            try {
-                String message = showTopic(2);
-                if(message.equals("Acces")){
-                    activateMenu(subMenuTopicMessage);
-                }else if(message.equals("You are not subscribed to this topic!")){
-                    System.out.println("You are not subscribed to this topic!");
-                    id_topic=2;
-                    activateMenu(subMenuSubscribe);
-                }
+        subMenuTopics.putAction("Add a message to a topic", () -> {
 
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
         });
 
-        subMenuTopics.putAction("TV Series", () -> {
-            try {
-                String message = showTopic(3);
-                if(message.equals("Acces")){
-                    activateMenu(subMenuTopicMessage);
-                }else if(message.equals("You are not subscribed to this topic!")){
-                    System.out.println("You are not subscribed to this topic!");
-                    id_topic=3;
-                    activateMenu(subMenuSubscribe);
-                }
-
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-
-        subMenuTopics.putAction("Books", () -> {
-            try {
-                String message = showTopic(4);
-                if(message.equals("Acces")){
-                    activateMenu(subMenuTopicMessage);
-                }else if(message.equals("You are not subscribed to this topic!")){
-                    System.out.println("You are not subscribed to this topic!");
-                    id_topic=4;
-                    activateMenu(subMenuSubscribe);
-                }
-
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-
-        subMenuTopics.putAction("Animals", () -> {
-            try {
-                String message = showTopic(5);
-                if(message.equals("Acces")){
-                    activateMenu(subMenuTopicMessage);
-                }else if(message.equals("You are not subscribed to this topic!")){
-                    System.out.println("You are not subscribed to this topic!");
-                    id_topic=5;
-                    activateMenu(subMenuSubscribe);
-                }
-
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-
-        subMenuTopics.putAction("Music", () -> {
-            try {
-                String message = showTopic(6);
-                if(message.equals("Acces")){
-                    activateMenu(subMenuTopicMessage);
-                }else if(message.equals("You are not subscribed to this topic!")){
-                    System.out.println("You are not subscribed to this topic!");
-                    id_topic=6;
-                    activateMenu(subMenuSubscribe);
-                }
-
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-
-        subMenuTopics.putAction("Art", () -> {
-            try {
-                String message = showTopic(7);
-                if(message.equals("Acces")){
-                    activateMenu(subMenuTopicMessage);
-                }else if(message.equals("You are not subscribed to this topic!")){
-                    System.out.println("You are not subscribed to this topic!");
-                    id_topic=7;
-                    activateMenu(subMenuSubscribe);
-                }
-
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-
-        subMenuTopics.putAction("Gaming", () -> {
-            try {
-                String message = showTopic(8);
-                if(message.equals("Acces")){
-                    activateMenu(subMenuTopicMessage);
-                }else if(message.equals("You are not subscribed to this topic!")){
-                    System.out.println("You are not subscribed to this topic!");
-                    id_topic=8;
-                    activateMenu(subMenuSubscribe);
-                }
-
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-
-        subMenuTopics.putAction("Food", () -> {
-            try {
-                String message = showTopic(9);
-                if(message.equals("Acces")){
-                    activateMenu(subMenuTopicMessage);
-                }else if(message.equals("You are not subscribed to this topic!")){
-                    System.out.println("You are not subscribed to this topic!");
-                    id_topic=9;
-                    activateMenu(subMenuSubscribe);
-                }
-
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-
-        subMenuTopics.putAction("Travel", () -> {
-            try {
-                String message = showTopic(10);
-                if(message.equals("Acces")){
-                    activateMenu(subMenuTopicMessage);
-                }else if(message.equals("You are not subscribed to this topic!")){
-                    System.out.println("You are not subscribed to this topic!");
-                    id_topic=10;
-                    activateMenu(subMenuSubscribe);
-                }
-
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-
-        subMenuTopics.putAction("Quit", () -> {
+        subMenuTopics.putAction("Exit", () -> {
             try {
                 quit();
             } catch (IOException e) {
@@ -298,48 +201,41 @@ public class Client implements Serializable {
             }
         });
 
-        subMenuSubscribe.putAction("Yes", () -> {
+        subscribeTopic.putAction("Yes", () ->{
             try {
-                subscribeTopic(id_topic);
-                activateMenu(subMenuTopicMessage);
+                System.out.println(subscribeTopic(id_topic));
+                activateMenu(subMenuTopics);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
 
-        subMenuSubscribe.putAction("No", () -> activateMenu(subMenuTopics));
-
-        subMenuSubscribe.putAction("Quit", () -> {
+        subscribeTopic.putAction("No", () ->{
             try {
-                quit();
-            } catch (IOException e) {
+                showAllTopics(2);
+                activateMenu(subMenuTopics);
+            } catch (IOException | ClassNotFoundException  e ) {
                 e.printStackTrace();
             }
+
         });
 
-        subMenuTopicMessage.putAction("See all posts in this topic",() -> {
+        subsubMenuTopics.putAction("Add a message to a topic", () -> {
+
+        });
+
+        subsubMenuTopics.putAction("Back to topics", () -> {
             try {
-                showMessages(id_topic);
+                showAllTopics(2);
+                activateMenu(subMenuTopics);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
 
-        subMenuTopicMessage.putAction("Add a message to this topic",() -> {
-
-        });
-
-        subMenuTopicMessage.putAction("Back", () -> activateMenu(subMenuTopics));
-
-        activateMenu(mainMenu);
+       activateMenu(mainMenu);
     }
 
-
-
-    /**
-     * Function that shows the options of a menu and which let the user select a certain option if it's correct
-     * @param newMenu
-     */
     private static void activateMenu(Menu newMenu) {
         System.out.println(newMenu.generateText());
         int actionNumber ;
@@ -353,6 +249,5 @@ public class Client implements Serializable {
             }
         }
     }
-
 
 }

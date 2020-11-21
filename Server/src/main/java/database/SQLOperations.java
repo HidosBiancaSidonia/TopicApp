@@ -29,6 +29,24 @@ public class SQLOperations {
         return connectionDB.getMessages();
     }
 
+    public void registerSQL(String username, String password) {
+        try {
+            statement = connectionDB.connect().createStatement();
+
+            String query = "SELECT id_user FROM user ";
+            resultSet = statement.executeQuery(query);
+            int id_user=0;
+            while (resultSet.next()) {
+                id_user = resultSet.getInt(1);
+            }
+            id_user++;
+            String sql = "INSERT INTO user (id_user, username, password) VALUES ('"+ id_user+"', '" + username + "', '" + password  + "')";
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public ArrayList<Integer> showTopicsForUserSQL(Integer id_user, Integer id) {
         ArrayList<Integer> id_user_topic = new ArrayList<Integer>();
 
@@ -74,21 +92,42 @@ public class SQLOperations {
     }
 
     public ArrayList<MessageUser>  messageUser(Integer id_topic){
-        ArrayList<Message> messagesL = getMessagesList();
-        ArrayList<MessageUser> messageUserArrayList = new ArrayList<MessageUser>();
-        ArrayList<User> users = getUserList();
-        MessageUser messageUser ;
-        for (Message message:messagesL) {
-            if(message.getId_topic().equals(id_topic)){
-                for(User user:users){
-                    if(user.getId_user().equals(message.getId_user())){
+        ArrayList<MessageUser> messageUsersFirst = new ArrayList<MessageUser>();
+        ArrayList<MessageUser> messageUsers = new ArrayList<MessageUser>();
 
-                        messageUser = new MessageUser(message.getMessage(), user.getUsername());
-                        messageUserArrayList.add(messageUser);
-                    }
-                }
+        try {
+            statement = connectionDB.connect().createStatement();
+
+            String query = "SELECT message,id_user FROM message WHERE id_topic='"+id_topic+"';";
+            resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int id_user = resultSet.getInt("id_user");
+                String message = resultSet.getString("message");
+                MessageUser messageUser = new MessageUser(message,id_user);
+                messageUsersFirst.add(messageUser);
             }
+
+
+
+            for (MessageUser messageUser:messageUsersFirst) {
+
+                String second_query = "SELECT username FROM user WHERE id_user='"+messageUser.getId_user()+"';";
+                resultSet = statement.executeQuery(second_query);
+
+                while (resultSet.next()) {
+                    String username = resultSet.getString("username");
+
+                    MessageUser messageUser2 = new MessageUser(messageUser.getMessage(),username);
+                    messageUsers.add(messageUser2);
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return messageUserArrayList;
+
+        return messageUsers;
     }
 }

@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class Message implements Serializable {
-    private static final long serializeVersionUID = 1L;
+    private static final long serialVersionUID = 6529685098267757690L;
     private Integer id_message;
     private String message;
     private Integer id_user;

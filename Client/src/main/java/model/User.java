@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Model class for the user table in the DB
  */
 public class User implements Serializable {
-    private static final long serializeVersionUID = 1L;
+    private static final long serialVersionUID = 6529685098267757690L;
     private Integer id_user;
     private String username;
     private String password;

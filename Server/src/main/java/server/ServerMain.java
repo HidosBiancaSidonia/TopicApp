@@ -2,7 +2,7 @@ package server;
 
 import database.ConnectionDB;
 
-public class MainApp {
+public class ServerMain {
     public static void main(String[] args) {
         try {
             ConnectionDB conn = new ConnectionDB(1);
