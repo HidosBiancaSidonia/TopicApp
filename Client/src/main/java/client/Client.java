@@ -193,7 +193,7 @@ public class Client implements Serializable {
                     activateMenu(subMenuTopics);
                 } else if(message.equals("Acces")){
                     showMessages(id_topic);
-                    activateMenu(subsubMenuTopics);
+                    activateMenu(subMenuTopics);
                 } else if(message.equals("You are not subscribed to this topic!")){
                     System.out.println(message);
                     activateMenu(subscribeTopic);
@@ -259,19 +259,6 @@ public class Client implements Serializable {
                 e.printStackTrace();
             }
 
-        });
-
-        subsubMenuTopics.putAction("Add a message to a topic", () -> {
-            subMenuTopics.executeAction(1);
-        });
-
-        subsubMenuTopics.putAction("Back to topics", () -> {
-            try {
-                showAllTopics(2);
-                activateMenu(subMenuTopics);
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
         });
 
        activateMenu(mainMenu);
