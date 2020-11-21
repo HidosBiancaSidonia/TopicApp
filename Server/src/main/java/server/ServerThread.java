@@ -1,6 +1,5 @@
 package server;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import database.SQLOperations;
 import model.*;
 
@@ -76,6 +75,8 @@ public class ServerThread extends Thread {
         }
         else if (line.toLowerCase().equalsIgnoreCase("showMessages")) {
             showMessages();
+        } else if (line.toLowerCase().equalsIgnoreCase("addMessages")) {
+            addMessages();
         }
     }
 
@@ -177,11 +178,26 @@ public class ServerThread extends Thread {
     }
 
     private void showMessages() throws IOException, ClassNotFoundException {
-        String id = (String) in.readObject();
-        System.out.println(id);
-        messageUsers = sqlOperations.messageUser(Integer.parseInt(id));
+        String id_topic = (String) in.readObject();
+        System.out.println(id_topic);
+        messageUsers = sqlOperations.messageUser(Integer.parseInt(id_topic));
 
         out.writeObject(messageUsers);
+        out.flush();
+    }
+
+    private void addMessages() throws IOException, ClassNotFoundException {
+        User user = ServerThread.user;
+        Integer id_topic = (Integer) in.readObject();
+        String message = (String) in.readObject();
+
+        Boolean ok = sqlOperations.addMessage(user.getId_user(),id_topic,message);
+
+        if(ok == true){
+            out.writeObject("Your message has been successfully added!");
+        }else{
+            out.writeObject("You can't add message!");
+        }
         out.flush();
     }
 }

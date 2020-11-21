@@ -19,7 +19,7 @@ public class Client implements Serializable {
     private static Scanner scanner = new Scanner(System.in);
     private static Integer id_topic=0;
 
-    public Client() throws IOException {
+    public Client()  {
         try {
             Socket socketClient = new Socket("localhost", 4134);
             out = new ObjectOutputStream(socketClient.getOutputStream());
@@ -118,6 +118,20 @@ public class Client implements Serializable {
         }
     }
 
+    private static String addMessages(Integer id, String message) throws IOException {
+        out.writeObject("addMessages");
+        out.writeObject(id);
+        out.writeObject(message);
+
+        try {
+            String server = (String) in.readObject();
+            return server;
+        }catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public static void menu() {
         Menu mainMenu = new Menu("\nChoose an option");
         Menu subMenuTopics = new Menu("I want to :");
@@ -190,13 +204,40 @@ public class Client implements Serializable {
         });
 
         subMenuTopics.putAction("Add a message to a topic", () -> {
+            try {
+
+                System.out.println("Enter the number of the topic you want to add a message: ");
+                id_topic = scanner.nextInt();
+                String server2 = showTopic(id_topic);
+                if(server2.equals("The number you entered is invalid")){
+                    System.out.println(server2);
+                    showAllTopics(2);
+                    activateMenu(subMenuTopics);
+                } else if(server2.equals("Acces")){
+                    System.out.println("\nAdd the message: ");
+                    String message = scanner.next();
+                    String server = addMessages(id_topic,message);
+                    if(server.equals("Your message has been successfully added!")) {
+                        System.out.println(server);
+                        activateMenu(subMenuTopics);
+                    }
+                } else if(server2.equals("You are not subscribed to this topic!")){
+                    System.out.println(server2);
+                    activateMenu(subscribeTopic);
+                }
+
+
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
         });
 
-        subMenuTopics.putAction("Exit", () -> {
+        subMenuTopics.putAction("Back to topics", () -> {
             try {
-                quit();
-            } catch (IOException e) {
+                showAllTopics(2);
+                activateMenu(subMenuTopics);
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
@@ -221,7 +262,7 @@ public class Client implements Serializable {
         });
 
         subsubMenuTopics.putAction("Add a message to a topic", () -> {
-
+            subMenuTopics.executeAction(1);
         });
 
         subsubMenuTopics.putAction("Back to topics", () -> {

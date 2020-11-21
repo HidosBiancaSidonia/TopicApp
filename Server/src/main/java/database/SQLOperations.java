@@ -130,4 +130,27 @@ public class SQLOperations {
 
         return messageUsers;
     }
+
+    public Boolean addMessage(Integer id_user,Integer id_topic, String message){
+        Boolean ok=false;
+
+        try {
+            statement = connectionDB.connect().createStatement();
+
+            String query = "SELECT id_message FROM message ";
+            resultSet = statement.executeQuery(query);
+            int id_message=0;
+            while (resultSet.next()) {
+                id_message = resultSet.getInt(1);
+            }
+            id_message++;
+            String query1 = "INSERT INTO message(id_message,message,id_user,id_topic) VALUES  ('"+id_message+"','"+message+"','"+id_user+"','"+id_topic+"');";
+            statement.executeUpdate(query1);
+            ok=true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ok;
+    }
 }
