@@ -6,23 +6,26 @@ public class MessageUser implements Serializable {
     private static final long serialVersionUID = 6529685098267757690L;
     private String message;
     private String user;
+    private int id_user;
 
     /**
      * Constructor without parameters that sets all null
-     */
-    public MessageUser(){
-        this.message = null;
-        this.user = null;
-    }
-
-    /**
-     * Constructor that sets all class variables
      * @param message
      * @param user
      */
     public MessageUser(String message, String user) {
         this.message = message;
         this.user = user;
+    }
+
+    /**
+     * Constructor that sets all class variables
+     * @param message
+     * @param id_user
+     */
+    public MessageUser(String message, Integer id_user) {
+        this.message = message;
+        this.id_user = id_user;
     }
 
     /**
@@ -53,6 +56,21 @@ public class MessageUser implements Serializable {
      */
     public void setUser(String user) {
         this.user = user;
+    }
+
+    /**
+     * @return id_user
+     */
+    public int getId_user() {
+        return id_user;
+    }
+
+    /**
+     * Sets the id_user variable
+     * @param id_user
+     */
+    public void setId_user(int id_user) {
+        this.id_user = id_user;
     }
 
     /**
