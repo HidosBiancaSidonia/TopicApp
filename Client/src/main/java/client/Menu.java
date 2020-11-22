@@ -8,6 +8,10 @@ public class Menu {
     private final String name;
     private LinkedHashMap<String, Runnable> actionsMap = new LinkedHashMap<String, Runnable>();
 
+    /**
+     * Constructor
+     * @param name
+     */
     public Menu(String name) {
         this.name = name;
     }

@@ -30,11 +30,21 @@ public class Client implements Serializable {
         }
     }
 
+    /**
+     * Force quit the active Client class
+     * @throws IOException
+     */
     private static void quit() throws IOException {
         out.writeObject("quit");
         System.exit(0);
     }
 
+    /**
+     * Function that gets the username and password to perform the login in the Server class
+     * @param username
+     * @param password
+     * @throws IOException
+     */
     private static void doLogin(String username, String password) throws IOException {
         out.writeObject("login");
         if (!username.isEmpty() && !password.isEmpty()) {
@@ -47,6 +57,13 @@ public class Client implements Serializable {
         }
     }
 
+    /**
+     * Function that gets the username and password to perform the register of a new user
+     * in the Server class
+     * @param username
+     * @param password
+     * @throws IOException
+     */
     private static void doRegister(String username, String password) throws IOException {
         out.writeObject("register");
         if (!username.isEmpty() && !password.isEmpty()) {
@@ -61,6 +78,12 @@ public class Client implements Serializable {
         }
     }
 
+    /**
+     * Function that show all topics using the function from the Server class
+     * @param i
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private static void showAllTopics(int i) throws IOException, ClassNotFoundException {
         out.writeObject("showAllTopics");
         if(i==1){
@@ -77,6 +100,14 @@ public class Client implements Serializable {
         System.out.println();
     }
 
+    /**
+     * Function that checks if the user is subscribed to a certain topic identified
+     * by the id parameter using the function from the Server class
+     * @param id
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private static String showTopic(Integer id) throws IOException, ClassNotFoundException {
         out.writeObject("showTopic");
         out.writeObject(id.toString());
@@ -92,6 +123,13 @@ public class Client implements Serializable {
         return "";
     }
 
+    /**
+     * Function that subscribes the user to a certain topic identified
+     *  by the id parameter using the function from the Server class
+     * @param id
+     * @return
+     * @throws IOException
+     */
     private static String subscribeTopic(Integer id) throws IOException {
         out.writeObject("subscribeTopic");
         out.writeObject(id.toString());
@@ -104,6 +142,13 @@ public class Client implements Serializable {
         return "";
     }
 
+    /**
+     * Function that show all messages in a topic identified
+     * by the id parameter using the function from the Server class
+     * @param id
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private static void showMessages(Integer id) throws IOException, ClassNotFoundException {
         out.writeObject("showMessages");
         out.writeObject(id.toString());
@@ -118,6 +163,14 @@ public class Client implements Serializable {
         }
     }
 
+    /**
+     * Function that gets the id_topic and message to perform the add of a new message
+     * in a certain topic using Server class
+     * @param id
+     * @param message
+     * @return
+     * @throws IOException
+     */
     private static String addMessages(Integer id, String message) throws IOException {
         out.writeObject("addMessages");
         out.writeObject(id);
@@ -132,11 +185,14 @@ public class Client implements Serializable {
         return "";
     }
 
+    /**
+     * Function that creates the menu, the choices in the menu and that calls the
+     * functions for each option in the menu
+     */
     public static void menu() {
         Menu mainMenu = new Menu("\nChoose an option");
         Menu subMenuTopics = new Menu("I want to :");
         Menu subscribeTopic = new Menu("Do you want to subscribe to this topic?");
-        Menu subsubMenuTopics = new Menu("\nI want to :");
 
         mainMenu.putAction("Log in", () -> {
             System.out.println("Please enter username and password.");
@@ -205,7 +261,6 @@ public class Client implements Serializable {
 
         subMenuTopics.putAction("Add a message to a topic", () -> {
             try {
-
                 System.out.println("Enter the number of the topic you want to add a message: ");
                 id_topic = scanner.nextInt();
                 String server2 = showTopic(id_topic);
@@ -225,8 +280,6 @@ public class Client implements Serializable {
                     System.out.println(server2);
                     activateMenu(subscribeTopic);
                 }
-
-
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -264,6 +317,11 @@ public class Client implements Serializable {
        activateMenu(mainMenu);
     }
 
+    /**
+     * Function that shows the options of a menu and which let the user select
+     * a certain option if it's correct.
+     * @param newMenu
+     */
     private static void activateMenu(Menu newMenu) {
         System.out.println(newMenu.generateText());
         int actionNumber ;
