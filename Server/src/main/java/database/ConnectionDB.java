@@ -1,20 +1,25 @@
 package database;
 
-import model.Message;
-import model.Topic;
-import model.User;
-import model.UserTopic;
+import model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class ConnectionDB {
 
-    private static Connection connection = null;
+    private static Connection connection;
 
+    /**
+     * Constructor that connect the application to the DB
+     * @param i
+     */
     public ConnectionDB(Integer i){
         connect();
     }
+
+    /**
+     * Constructor without parameters that sets connection to null
+     */
     public ConnectionDB(){
     }
 
@@ -69,6 +74,10 @@ public class ConnectionDB {
         return users;
     }
 
+    /**
+     * Function that gets the topics from DB
+     * @return
+     */
     ArrayList<Topic> getTopics() {
         ArrayList<Topic> topics = new ArrayList<Topic>();
 
@@ -94,6 +103,10 @@ public class ConnectionDB {
         return topics;
     }
 
+    /**
+     * Function that gets the users-topics from DB
+     * @return
+     */
     ArrayList<UserTopic> getUserTopics() {
         ArrayList<UserTopic> userTopics = new ArrayList<UserTopic>();
 
@@ -120,6 +133,10 @@ public class ConnectionDB {
         return userTopics;
     }
 
+    /**
+     * Function that gets the messages from DB
+     * @return
+     */
     ArrayList<Message> getMessages() {
         ArrayList<Message> messageArrayList = new ArrayList<Message>();
 

@@ -1,34 +1,37 @@
 package database;
 
 import model.*;
-
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SQLOperations {
-    private ConnectionDB connectionDB = new ConnectionDB();
+    private final ConnectionDB connectionDB = new ConnectionDB();
     private Statement statement;
     private ResultSet resultSet = null;
 
+    /**
+     * Function to get the users from DB using the getUsers function from ConnectionDB
+     * @return users list
+     */
     public ArrayList<User> getUserList() {
         return connectionDB.getUsers();
     }
 
+    /**
+     * Function to get the topics from DB using the getTopics function from ConnectionDB
+     * @return topics list
+     */
     public ArrayList<Topic> getTopicList() {
         return connectionDB.getTopics();
     }
 
-    public ArrayList<UserTopic> getUserTopicList() {
-        return connectionDB.getUserTopics();
-    }
-
-    public ArrayList<Message> getMessagesList() {
-        return connectionDB.getMessages();
-    }
-
+    /**
+     * Function to register an user into DB
+     * @param username
+     * @param password
+     */
     public void registerSQL(String username, String password) {
         try {
             statement = connectionDB.connect().createStatement();
@@ -47,6 +50,12 @@ public class SQLOperations {
         }
     }
 
+    /**
+     * Function that gets all the topics from DB in which a client is subscribed
+     * @param id_user
+     * @param id
+     * @return
+     */
     public ArrayList<Integer> showTopicsForUserSQL(Integer id_user, Integer id) {
         ArrayList<Integer> id_user_topic = new ArrayList<Integer>();
 
@@ -68,7 +77,13 @@ public class SQLOperations {
         return id_user_topic;
     }
 
-    public Boolean subscribeTopic (Integer id_user, Integer id_topic){
+    /**
+     * Function that add a subscribed to a topic in DB
+     * @param id_user
+     * @param id_topic
+     * @return
+     */
+    public Boolean subscribeTopicSQL(Integer id_user, Integer id_topic){
         Boolean ok=false;
         try {
             statement = connectionDB.connect().createStatement();
@@ -91,7 +106,12 @@ public class SQLOperations {
         return ok;
     }
 
-    public ArrayList<MessageUser>  messageUser(Integer id_topic){
+    /**
+     * Function to get the messages and user from a topic from DB
+     * @param id_topic
+     * @return
+     */
+    public ArrayList<MessageUser> getMessagesAndUsersSQL(Integer id_topic){
         ArrayList<MessageUser> messageUsersFirst = new ArrayList<MessageUser>();
         ArrayList<MessageUser> messageUsers = new ArrayList<MessageUser>();
 
@@ -102,13 +122,11 @@ public class SQLOperations {
             resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                int id_user = resultSet.getInt("id_user");
+                Integer id_user = resultSet.getInt("id_user");
                 String message = resultSet.getString("message");
                 MessageUser messageUser = new MessageUser(message,id_user);
                 messageUsersFirst.add(messageUser);
             }
-
-
 
             for (MessageUser messageUser:messageUsersFirst) {
 
@@ -131,7 +149,14 @@ public class SQLOperations {
         return messageUsers;
     }
 
-    public Boolean addMessage(Integer id_user,Integer id_topic, String message){
+    /**
+     * Function that add message in a DB
+     * @param id_user
+     * @param id_topic
+     * @param message
+     * @return
+     */
+    public Boolean addMessageSQL(Integer id_user,Integer id_topic, String message){
         Boolean ok=false;
 
         try {

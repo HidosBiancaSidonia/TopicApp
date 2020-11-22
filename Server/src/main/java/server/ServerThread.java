@@ -20,6 +20,10 @@ public class ServerThread extends Thread {
     private static ArrayList<Topic> topics = new ArrayList<Topic>();
     private static ArrayList<MessageUser> messageUsers = new ArrayList<MessageUser>();
 
+    /**
+     * Constructor that sets ObjectInputStream and ObjectOutputStream
+     * @param socket
+     */
     public ServerThread(Socket socket) {
         this.socket = socket;
         try {
@@ -30,6 +34,10 @@ public class ServerThread extends Thread {
         }
     }
 
+    /**
+     * Function through which the command is received from the client
+     * and sends this command to the server execution
+     */
     @Override
     public void run() {
         String command;
@@ -61,6 +69,12 @@ public class ServerThread extends Thread {
         }
     }
 
+    /**
+     * Function that depends on the command given from the Client
+     * @param line
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void check(String line) throws IOException, ClassNotFoundException {
         if (line.toLowerCase().equalsIgnoreCase("login")) {
             login();
@@ -80,6 +94,12 @@ public class ServerThread extends Thread {
         }
     }
 
+    /**
+     * Function that checks if the user is already in the database
+     * @param username
+     * @param password
+     * @return
+     */
     private User checkLogIn(String username, String password) {
         List<User> userList = sqlOperations.getUserList();
 
@@ -92,6 +112,11 @@ public class ServerThread extends Thread {
         return null;
     }
 
+    /**
+     * Login function that uses the loginSQL() function from SQLOperations
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void login() throws IOException, ClassNotFoundException {
         String username = (String) in.readObject();
         String password = (String) in.readObject();
@@ -110,6 +135,11 @@ public class ServerThread extends Thread {
         out.flush();
     }
 
+    /**
+     * Register function that uses the registerSQL() function from SQLOperations
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void register() throws IOException, ClassNotFoundException {
         String username = (String) in.readObject();
         String password = (String) in.readObject();
@@ -132,6 +162,11 @@ public class ServerThread extends Thread {
         out.flush();
     }
 
+    /**
+     * Show all topics for user function that uses the getTopicList()
+     * function from SQLOperations
+     * @throws IOException
+     */
     private void showAllTopics() throws IOException {
 
         topics = sqlOperations.getTopicList();
@@ -145,6 +180,12 @@ public class ServerThread extends Thread {
         out.flush();
     }
 
+    /**
+     * Show if a user is subscribed to a topic using the showTopicsForUserSQL()
+     * function from SQLOperations
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void showTopic() throws IOException, ClassNotFoundException {
         User user = ServerThread.user;
         String id = (String) in.readObject();
@@ -163,11 +204,17 @@ public class ServerThread extends Thread {
         out.flush();
     }
 
+    /**
+     * Function that subscribed the user to a topic using subscribeTopicSQL()
+     * function from SQLOperations
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void subscribeTopic () throws IOException, ClassNotFoundException {
         User user = ServerThread.user;
         String id = (String) in.readObject();
 
-        Boolean ok = sqlOperations.subscribeTopic(user.getId_user(),Integer.parseInt(id));
+        Boolean ok = sqlOperations.subscribeTopicSQL(user.getId_user(),Integer.parseInt(id));
 
         if(ok == true){
             out.writeObject("From now, you are subscribed to this topic!");
@@ -177,21 +224,33 @@ public class ServerThread extends Thread {
         out.flush();
     }
 
+    /**
+     * Show all messages in a topic using the getMessagesAndUsersSQL()
+     * function from SQLOperations
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void showMessages() throws IOException, ClassNotFoundException {
         String id_topic = (String) in.readObject();
         System.out.println(id_topic);
-        messageUsers = sqlOperations.messageUser(Integer.parseInt(id_topic));
+        messageUsers = sqlOperations.getMessagesAndUsersSQL(Integer.parseInt(id_topic));
 
         out.writeObject(messageUsers);
         out.flush();
     }
 
+    /**
+     * Function that add message in a topic using addMessageSQL()
+     * function from SQLOperations
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void addMessages() throws IOException, ClassNotFoundException {
         User user = ServerThread.user;
         Integer id_topic = (Integer) in.readObject();
         String message = (String) in.readObject();
 
-        Boolean ok = sqlOperations.addMessage(user.getId_user(),id_topic,message);
+        Boolean ok = sqlOperations.addMessageSQL(user.getId_user(),id_topic,message);
 
         if(ok == true){
             out.writeObject("Your message has been successfully added!");
