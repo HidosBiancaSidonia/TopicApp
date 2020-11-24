@@ -14,7 +14,6 @@ public class Server {
      * Function that instantiate the server thread
      */
     public void start() {
-
         new Thread(() -> {
             System.out.println("Starting the socket server at port: " + PORT);
             ServerSocket serverSocket = null;
@@ -25,7 +24,7 @@ public class Server {
             }
 
             while (true) {
-                System.out.println("You are connected to the server.");
+
                 Socket socket = null;
                 try {
                     assert serverSocket != null;

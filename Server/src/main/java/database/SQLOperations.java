@@ -1,6 +1,8 @@
 package database;
 
 import model.*;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,16 +37,9 @@ public class SQLOperations {
     public void registerSQL(String username, String password) {
         try {
             statement = connectionDB.connect().createStatement();
+            statement.executeUpdate("INSERT INTO user ( username, password) VALUES ('" + username + "', '" + password  + "')",Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = statement.getGeneratedKeys();
 
-            String query = "SELECT id_user FROM user ";
-            resultSet = statement.executeQuery(query);
-            int id_user=0;
-            while (resultSet.next()) {
-                id_user = resultSet.getInt(1);
-            }
-            id_user++;
-            String sql = "INSERT INTO user (id_user, username, password) VALUES ('"+ id_user+"', '" + username + "', '" + password  + "')";
-            statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,16 +82,8 @@ public class SQLOperations {
         Boolean ok=false;
         try {
             statement = connectionDB.connect().createStatement();
-
-            String query = "SELECT id_user_topic FROM user_topic ";
-            resultSet = statement.executeQuery(query);
-            int id_user_topic=0;
-            while (resultSet.next()) {
-                id_user_topic = resultSet.getInt(1);
-            }
-            id_user_topic++;
-            String query1 = "INSERT INTO user_topic(id_user_topic,id_user,id_topic) VALUES  ('"+id_user_topic+"','"+id_user+"','"+id_topic+"');";
-            statement.executeUpdate(query1);
+            statement.executeUpdate("INSERT INTO user_topic(id_user,id_topic) VALUES  ('"+id_user+"','"+id_topic+"');",Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = statement.getGeneratedKeys();
 
             ok=true;
         } catch (SQLException e) {
@@ -161,16 +148,9 @@ public class SQLOperations {
 
         try {
             statement = connectionDB.connect().createStatement();
+            statement.executeUpdate("INSERT INTO message(message,id_user,id_topic) VALUES  ('"+message+"','"+id_user+"','"+id_topic+"');",Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = statement.getGeneratedKeys();
 
-            String query = "SELECT id_message FROM message ";
-            resultSet = statement.executeQuery(query);
-            int id_message=0;
-            while (resultSet.next()) {
-                id_message = resultSet.getInt(1);
-            }
-            id_message++;
-            String query1 = "INSERT INTO message(id_message,message,id_user,id_topic) VALUES  ('"+id_message+"','"+message+"','"+id_user+"','"+id_topic+"');";
-            statement.executeUpdate(query1);
             ok=true;
         } catch (SQLException e) {
             e.printStackTrace();

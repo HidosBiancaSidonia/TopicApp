@@ -25,13 +25,11 @@ public class ConnectionDB {
 
     /**
      * Function that connect the application to the DB using JDBC
-     * @return
+     * @return connection
      */
     Connection connect() {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost/example", "root", "1q2w3e");
-            System.out.println("Connected to database.");
-
             return connection;
 
         } catch (SQLException e) {
@@ -49,7 +47,7 @@ public class ConnectionDB {
      * @return
      */
     ArrayList<User> getUsers() {
-        ArrayList<User> users = new ArrayList<User>();
+        ArrayList<User> users = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();
@@ -76,10 +74,10 @@ public class ConnectionDB {
 
     /**
      * Function that gets the topics from DB
-     * @return
+     * @return topics
      */
     ArrayList<Topic> getTopics() {
-        ArrayList<Topic> topics = new ArrayList<Topic>();
+        ArrayList<Topic> topics = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();
@@ -105,10 +103,10 @@ public class ConnectionDB {
 
     /**
      * Function that gets the users-topics from DB
-     * @return
+     * @return userTopics
      */
     ArrayList<UserTopic> getUserTopics() {
-        ArrayList<UserTopic> userTopics = new ArrayList<UserTopic>();
+        ArrayList<UserTopic> userTopics = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();
@@ -135,10 +133,10 @@ public class ConnectionDB {
 
     /**
      * Function that gets the messages from DB
-     * @return
+     * @return messageArrayList
      */
     ArrayList<Message> getMessages() {
-        ArrayList<Message> messageArrayList = new ArrayList<Message>();
+        ArrayList<Message> messageArrayList = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();

@@ -90,7 +90,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'bianca','1q2w3e'),(2,'marius','1q2w3e'),(3,'laura','1q2w3e'),(4,'cecilia','1q2w3e'),(5,'claudiu','1q2w3e'),(6,'dana','1q2w3e');
+INSERT INTO `user` VALUES (1,'bianca','1q2w3e'),(2,'marius','1q2w3e'),(3,'laura','1q2w3e'),(4,'cecilia','1q2w3e'),(5,'claudiu','1q2w3e');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 

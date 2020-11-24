@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class Client implements Serializable {
 
@@ -17,6 +18,7 @@ public class Client implements Serializable {
     private static ObjectOutputStream out = null;
     private static String username, password;
     private static Scanner scanner = new Scanner(System.in);
+    private static Scanner scannerWithDelimiter = new Scanner(System.in).useDelimiter("\n");
     private static Integer id_topic=0;
 
     public Client()  {
@@ -240,14 +242,14 @@ public class Client implements Serializable {
 
         subMenuTopics.putAction("See all the posts in a topic", () -> {
             try {
-                System.out.println("Enter the number of the topic you want to see all the posts: ");
+                System.out.println("Enter the number of the topic you want to add a message: ");
                 id_topic = scanner.nextInt();
                 String message = showTopic(id_topic);
                 if(message.equals("The number you entered is invalid")){
                     System.out.println(message);
                     showAllTopics(2);
                     activateMenu(subMenuTopics);
-                } else if(message.equals("Acces")){
+                } else if(message.equals("Access")){
                     showMessages(id_topic);
                     activateMenu(subMenuTopics);
                 } else if(message.equals("You are not subscribed to this topic!")){
@@ -268,9 +270,9 @@ public class Client implements Serializable {
                     System.out.println(server2);
                     showAllTopics(2);
                     activateMenu(subMenuTopics);
-                } else if(server2.equals("Acces")){
+                } else if(server2.equals("Access")){
                     System.out.println("\nAdd the message: ");
-                    String message = scanner.next();
+                    String message = scannerWithDelimiter.next();
                     String server = addMessages(id_topic,message);
                     if(server.equals("Your message has been successfully added!")) {
                         System.out.println(server);
@@ -324,10 +326,11 @@ public class Client implements Serializable {
      */
     private static void activateMenu(Menu newMenu) {
         System.out.println(newMenu.generateText());
-        int actionNumber ;
+        Integer actionNumber ;
+        Scanner scannerForMenu = new Scanner(System.in);
         while (true) {
-            if (scanner.hasNextInt()) {
-                actionNumber = scanner.nextInt();
+            if (scannerForMenu.hasNextInt()) {
+                actionNumber = scannerForMenu.nextInt();
                 newMenu.executeAction(actionNumber);
             } else {
                 System.out.println("Please enter only numbers!");
