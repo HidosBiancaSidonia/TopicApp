@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `example` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `example`;
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: localhost    Database: example
@@ -34,7 +32,7 @@ CREATE TABLE `message` (
   KEY `id_topic_idx` (`id_topic`),
   CONSTRAINT `id_topic` FOREIGN KEY (`id_topic`) REFERENCES `topic` (`id_topic`),
   CONSTRAINT `id_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=1013 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1017 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +41,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (1006,'Do you play any sports?',1001,1),(1007,'Not really. I always promise myself that I\'m going to take up a sport frequently and try to get into shape but I never seem to get started.',1000,1),(1008,'What is your favorite sport?',1001,1),(1009,'Volleyball, definitely.',1000,1),(1010,'Hello everyone!',1002,1),(1012,'I play badminton with my brother :))',1002,1);
+INSERT INTO `message` VALUES (1006,'Do you play any sports?',1001,1),(1007,'Not really. I always promise myself that I\'m going to take up a sport frequently and try to get into shape but I never seem to get started.',1000,1),(1008,'What is your favorite sport?',1001,1),(1009,'Volleyball, definitely.',1000,1),(1015,'Shiba inu',1001,5);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +81,7 @@ CREATE TABLE `user` (
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=1003 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1006 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +90,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1000,'bianca','1q2w3e'),(1001,'marius','1q2w3e'),(1002,'ana','1q2w3e');
+INSERT INTO `user` VALUES (1000,'bianca','1q2w3e'),(1001,'mihai','1q2w3e');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,8 +105,10 @@ CREATE TABLE `user_topic` (
   `id_user_topic` int NOT NULL AUTO_INCREMENT,
   `id_user` int NOT NULL,
   `id_topic` int NOT NULL,
-  PRIMARY KEY (`id_user_topic`)
-) ENGINE=InnoDB AUTO_INCREMENT=2225 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id_user_topic`),
+  KEY `id_user_idx` (`id_user`),
+  KEY `id_topic_idx` (`id_topic`)
+) ENGINE=InnoDB AUTO_INCREMENT=2231 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,7 +117,7 @@ CREATE TABLE `user_topic` (
 
 LOCK TABLES `user_topic` WRITE;
 /*!40000 ALTER TABLE `user_topic` DISABLE KEYS */;
-INSERT INTO `user_topic` VALUES (2222,1001,1),(2223,1000,1),(2224,1002,1);
+INSERT INTO `user_topic` VALUES (2222,1001,1),(2223,1000,1),(2228,1001,5),(2229,1000,5);
 /*!40000 ALTER TABLE `user_topic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,4 +138,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-24 22:22:19
+-- Dump completed on 2020-11-26 16:44:54
