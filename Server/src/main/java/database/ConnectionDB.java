@@ -11,7 +11,6 @@ public class ConnectionDB {
 
     /**
      * Constructor that connect the application to the DB
-     * @param i
      */
     public ConnectionDB(Integer i){
         connect();
@@ -25,7 +24,6 @@ public class ConnectionDB {
 
     /**
      * Function that connect the application to the DB using JDBC
-     * @return connection
      */
     Connection connect() {
         try {
@@ -44,7 +42,6 @@ public class ConnectionDB {
 
     /**
      * Function that gets the users from DB
-     * @return
      */
     ArrayList<User> getUsers() {
         ArrayList<User> users = new ArrayList<>();
@@ -74,7 +71,6 @@ public class ConnectionDB {
 
     /**
      * Function that gets the topics from DB
-     * @return topics
      */
     ArrayList<Topic> getTopics() {
         ArrayList<Topic> topics = new ArrayList<>();
@@ -103,7 +99,6 @@ public class ConnectionDB {
 
     /**
      * Function that gets the users-topics from DB
-     * @return userTopics
      */
     ArrayList<UserTopic> getUserTopics() {
         ArrayList<UserTopic> userTopics = new ArrayList<>();
@@ -133,7 +128,6 @@ public class ConnectionDB {
 
     /**
      * Function that gets the messages from DB
-     * @return messageArrayList
      */
     ArrayList<Message> getMessages() {
         ArrayList<Message> messageArrayList = new ArrayList<>();

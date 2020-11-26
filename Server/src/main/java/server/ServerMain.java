@@ -6,7 +6,6 @@ public class ServerMain {
 
     /**
      * Main method
-     * @param args
      */
     public static void main(String[] args) {
         try {

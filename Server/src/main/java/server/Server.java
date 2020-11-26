@@ -1,14 +1,12 @@
 package server;
 
-import database.ConnectionDB;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
 
-    public static final int PORT = 4134;
+    public static final int PORT = 4133;
 
     /**
      * Function that instantiate the server thread
@@ -33,7 +31,7 @@ public class Server {
                     e.printStackTrace();
                 }
                 assert socket != null;
-                new Thread((Runnable) new ServerThread(socket)).start();
+                new Thread(new ServerThread(socket)).start();
             }
 
         }).start();

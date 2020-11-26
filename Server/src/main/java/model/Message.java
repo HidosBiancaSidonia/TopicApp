@@ -21,10 +21,6 @@ public class Message implements Serializable {
 
     /**
      * Constructor that sets all class variables
-     * @param id_message
-     * @param message
-     * @param id_user
-     * @param id_topic
      */
     public Message(Integer id_message, String message, Integer id_user,Integer id_topic) {
         this.id_message = id_message;
@@ -42,7 +38,6 @@ public class Message implements Serializable {
 
     /**
      * Sets the id_message variable
-     * @param id_message
      */
     public void setId_message(Integer id_message) {
         this.id_message = id_message;
@@ -57,7 +52,6 @@ public class Message implements Serializable {
 
     /**
      * Sets the message variable
-     * @param message
      */
     public void setMessage(String message) {
         this.message = message;
@@ -72,7 +66,6 @@ public class Message implements Serializable {
 
     /**
      * Sets the id_user variable
-     * @param id_user
      */
     public void setId_user(Integer id_user) {
         this.id_user = id_user;
@@ -87,7 +80,6 @@ public class Message implements Serializable {
 
     /**
      * Sets the id_topic variable
-     * @param id_topic
      */
     public void setId_topic(Integer id_topic) {
         this.id_topic = id_topic;
@@ -95,7 +87,6 @@ public class Message implements Serializable {
 
     /**
      * Converts the Message object to a string
-     * @return
      */
     @Override
     public String toString() {

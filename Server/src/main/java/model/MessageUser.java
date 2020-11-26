@@ -10,8 +10,6 @@ public class MessageUser implements Serializable {
 
     /**
      * Constructor without parameters that sets all null
-     * @param message
-     * @param user
      */
     public MessageUser(String message, String user) {
         this.message = message;
@@ -20,8 +18,6 @@ public class MessageUser implements Serializable {
 
     /**
      * Constructor that sets all class variables
-     * @param message
-     * @param id_user
      */
     public MessageUser(String message, Integer id_user) {
         this.message = message;
@@ -37,7 +33,6 @@ public class MessageUser implements Serializable {
 
     /**
      * Sets the message variable
-     * @param message
      */
     public void setMessage(String message) {
         this.message = message;
@@ -52,7 +47,6 @@ public class MessageUser implements Serializable {
 
     /**
      * Sets the user variable
-     * @param user
      */
     public void setUser(String user) {
         this.user = user;
@@ -67,7 +61,6 @@ public class MessageUser implements Serializable {
 
     /**
      * Sets the id_user variable
-     * @param id_user
      */
     public void setId_user(int id_user) {
         this.id_user = id_user;
@@ -75,7 +68,6 @@ public class MessageUser implements Serializable {
 
     /**
      * Converts the MessageUser object to a string
-     * @return
      */
     @Override
     public String toString() {

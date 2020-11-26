@@ -17,8 +17,6 @@ public class Topic implements Serializable {
 
     /**
      * Constructor that sets all class variables
-     * @param id_topic
-     * @param topicName
      */
     public Topic(Integer id_topic, String topicName) {
         this.id_topic = id_topic;
@@ -27,7 +25,6 @@ public class Topic implements Serializable {
 
     /**
      * Constructor that sets topicName variable
-     * @param topicName
      */
     public Topic(String topicName) {
         this.topicName = topicName;
@@ -42,7 +39,6 @@ public class Topic implements Serializable {
 
     /**
      * Sets the id_topic variable
-     * @param id_topic
      */
     public void setId_topic(Integer id_topic) {
         this.id_topic = id_topic;
@@ -57,7 +53,6 @@ public class Topic implements Serializable {
 
     /**
      * Sets the topicName variable
-     * @param topicName
      */
     public void setTopicName(String topicName) {
         this.topicName = topicName;
@@ -65,7 +60,6 @@ public class Topic implements Serializable {
 
     /**
      * Converts the Topic object to a string
-     * @return
      */
     @Override
     public String toString() {

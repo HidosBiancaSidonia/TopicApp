@@ -19,9 +19,6 @@ public class UserTopic implements Serializable {
 
     /**
      * Constructor that sets all class variables
-     * @param id_user_topic
-     * @param id_user
-     * @param id_topic
      */
     public UserTopic(Integer id_user_topic, Integer id_user, Integer id_topic) {
         this.id_user_topic = id_user_topic;
@@ -38,7 +35,6 @@ public class UserTopic implements Serializable {
 
     /**
      * Sets the id_user_topic variable
-     * @param id_user_topic
      */
     public void setId_user_topic(Integer id_user_topic) {
         this.id_user_topic = id_user_topic;
@@ -53,7 +49,6 @@ public class UserTopic implements Serializable {
 
     /**
      * Sets the id_user variable
-     * @param id_user
      */
     public void setId_user(Integer id_user) {
         this.id_user = id_user;
@@ -68,7 +63,6 @@ public class UserTopic implements Serializable {
 
     /**
      * Sets the id_topic variable
-     * @param id_topic
      */
     public void setId_topic(Integer id_topic) {
         this.id_topic = id_topic;
@@ -76,7 +70,6 @@ public class UserTopic implements Serializable {
 
     /**
      * Converts the UserTopic object to a string
-     * @return
      */
     @Override
     public String toString() {

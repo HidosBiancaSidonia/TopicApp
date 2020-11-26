@@ -2,7 +2,6 @@ package database;
 
 import model.*;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -31,14 +30,12 @@ public class SQLOperations {
 
     /**
      * Function to register an user into DB
-     * @param username
-     * @param password
      */
     public void registerSQL(String username, String password) {
         try {
             statement = connectionDB.connect().createStatement();
             statement.executeUpdate("INSERT INTO user ( username, password) VALUES ('" + username + "', '" + password  + "')",Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = statement.getGeneratedKeys();
+            statement.getGeneratedKeys();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,12 +44,9 @@ public class SQLOperations {
 
     /**
      * Function that gets all the topics from DB in which a client is subscribed
-     * @param id_user
-     * @param id
-     * @return
      */
     public ArrayList<Integer> showTopicsForUserSQL(Integer id_user, Integer id) {
-        ArrayList<Integer> id_user_topic = new ArrayList<Integer>();
+        ArrayList<Integer> id_user_topic = new ArrayList<>();
 
         try {
             statement = connectionDB.connect().createStatement();
@@ -74,16 +68,13 @@ public class SQLOperations {
 
     /**
      * Function that add a subscribed to a topic in DB
-     * @param id_user
-     * @param id_topic
-     * @return
      */
     public Boolean subscribeTopicSQL(Integer id_user, Integer id_topic){
-        Boolean ok=false;
+        boolean ok=false;
         try {
             statement = connectionDB.connect().createStatement();
             statement.executeUpdate("INSERT INTO user_topic(id_user,id_topic) VALUES  ('"+id_user+"','"+id_topic+"');",Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = statement.getGeneratedKeys();
+            statement.getGeneratedKeys();
 
             ok=true;
         } catch (SQLException e) {
@@ -95,12 +86,10 @@ public class SQLOperations {
 
     /**
      * Function to get the messages and user from a topic from DB
-     * @param id_topic
-     * @return
      */
     public ArrayList<MessageUser> getMessagesAndUsersSQL(Integer id_topic){
-        ArrayList<MessageUser> messageUsersFirst = new ArrayList<MessageUser>();
-        ArrayList<MessageUser> messageUsers = new ArrayList<MessageUser>();
+        ArrayList<MessageUser> messageUsersFirst = new ArrayList<>();
+        ArrayList<MessageUser> messageUsers = new ArrayList<>();
 
         try {
             statement = connectionDB.connect().createStatement();
@@ -138,18 +127,14 @@ public class SQLOperations {
 
     /**
      * Function that add message in a DB
-     * @param id_user
-     * @param id_topic
-     * @param message
-     * @return
      */
     public Boolean addMessageSQL(Integer id_user,Integer id_topic, String message){
-        Boolean ok=false;
+        boolean ok=false;
 
         try {
             statement = connectionDB.connect().createStatement();
             statement.executeUpdate("INSERT INTO message(message,id_user,id_topic) VALUES  ('"+message+"','"+id_user+"','"+id_topic+"');",Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = statement.getGeneratedKeys();
+            statement.getGeneratedKeys();
 
             ok=true;
         } catch (SQLException e) {

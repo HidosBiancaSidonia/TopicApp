@@ -22,8 +22,6 @@ public class User implements Serializable {
 
     /**
      * Constructor that sets username and passwords variables
-     * @param username
-     * @param password
      */
     public User(String username, String password) {
         this.username = username;
@@ -32,9 +30,6 @@ public class User implements Serializable {
 
     /**
      * Constructor that sets all class variables
-     * @param id_user
-     * @param username
-     * @param password
      */
     public User(Integer id_user, String username, String password) {
         this.id_user = id_user;
@@ -51,7 +46,6 @@ public class User implements Serializable {
 
     /**
      * Sets the id_user variable
-     * @param id_user
      */
     public void setId_user(Integer id_user) {
         this.id_user = id_user;
@@ -66,7 +60,6 @@ public class User implements Serializable {
 
     /**
      * Sets the username variable
-     * @param username
      */
     public void setUsername(String username) {
         this.username = username;
@@ -81,7 +74,6 @@ public class User implements Serializable {
 
     /**
      * Sets the password variable
-     * @param password
      */
     public void setPassword(String password) {
         this.password = password;
@@ -89,7 +81,6 @@ public class User implements Serializable {
 
     /**
      * Converts the User object to a string
-     * @return
      */
     @Override
     public String toString() {
