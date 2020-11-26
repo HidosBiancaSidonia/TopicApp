@@ -2,6 +2,7 @@ package server;
 
 import database.SQLOperations;
 import model.*;
+import util.MessageUser;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -16,7 +17,6 @@ public class ServerThread extends Thread {
     private ObjectInputStream in = null;
     private ObjectOutputStream out = null;
     private final SQLOperations sqlOperations = new SQLOperations();
-    private static User user;
     private Integer id_user;
 
     /**
@@ -51,12 +51,11 @@ public class ServerThread extends Thread {
                     } else {
                         check(command);
                     }
-                } catch (EOFException ex1) {
+                } catch (Exception ex1) {
+                    ex1.getMessage();
                     break;
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Socket is closing.");
@@ -119,10 +118,8 @@ public class ServerThread extends Thread {
         Integer id;
         if (user != null && !user.getUsername().isEmpty() && !user.getPassword().isEmpty()) {
             out.writeObject("Log in successful.");
-            ServerThread.user = new User(user.getUsername(), user.getPassword());
             System.out.println(user.toString());
             out.writeObject(user);
-            ServerThread.user = user;
             id = user.getId_user();
             System.out.println("Client with "+ socket.getPort() +" port managed to log in\n");
         } else {
@@ -149,17 +146,15 @@ public class ServerThread extends Thread {
         Integer id = 0;
         for (User user1 : userArrayList) {
             if (!user1.getUsername().equals(user.getUsername())) {
-                ServerThread.user = user1;
                 out.writeObject("Register successful.");
                 sqlOperations.registerSQL(username, password);
                 id = user1.getId_user();
                 System.out.println("Client with "+ socket.getPort() +" port managed to register\n");
-                break;
             } else {
                 out.writeObject("The user already exists.");
                 System.out.println("Client with "+ socket.getPort() +" port don't managed to register because already exists\n");
-                break;
             }
+            break;
         }
 
         out.flush();

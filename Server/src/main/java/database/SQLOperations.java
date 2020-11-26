@@ -1,6 +1,7 @@
 package database;
 
 import model.*;
+import util.MessageUser;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -63,8 +63,8 @@ public class Topic implements Serializable {
      */
     @Override
     public String toString() {
-        int nr=0;
-
-        return "\r\n"  + nr++ + ". " + topicName +" \r\n" ;
+        return "Topic{" +
+                "topicName='" + topicName + '\'' +
+                '}';
     }
 }

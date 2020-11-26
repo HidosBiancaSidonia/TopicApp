@@ -1,6 +1,6 @@
 package client;
 
-import model.MessageUser;
+import util.MessageUser;
 import model.Topic;
 
 import java.io.IOException;
@@ -239,6 +239,8 @@ public class Client implements Serializable {
             }
         });
 
+
+
         subMenuTopics.putAction("Add a message to a topic", () -> {
             try {
                 System.out.println("Enter the number of the topic you want to add a message: ");
@@ -301,6 +303,13 @@ public class Client implements Serializable {
                 e.printStackTrace();
             }
 
+        });
+        subMenuTopics.putAction("Quit", () -> {
+            try {
+                quit();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
        activateMenu(mainMenu);
