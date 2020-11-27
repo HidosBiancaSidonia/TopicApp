@@ -14,6 +14,12 @@ public class SQLOperations {
     private ResultSet resultSet = null;
 
     /**
+     * Constructor
+     */
+    public SQLOperations(){
+    }
+
+    /**
      * Function to get the users from DB using the getUsers function from ConnectionDB
      * @return users list
      */
@@ -31,6 +37,8 @@ public class SQLOperations {
 
     /**
      * Function to register an user into DB
+     * @param username - the string that contains the client's username
+     * @param password - the string that contains the client's password
      */
     public void registerSQL(String username, String password) {
         try {
@@ -45,19 +53,20 @@ public class SQLOperations {
 
     /**
      * Function that gets all the topics from DB in which a client is subscribed
+     * @param id_user - used to identify the user
+     * @param id - used to identify the topic
+     * @return id_user_topic
      */
     public ArrayList<Integer> showTopicsForUserSQL(Integer id_user, Integer id) {
         ArrayList<Integer> id_user_topic = new ArrayList<>();
 
         try {
             statement = connectionDB.connect().createStatement();
-
             String query = "SELECT id_user_topic FROM user_topic WHERE id_user='"+id_user+"' AND id_topic='"+id+"';";
             resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
                 int id_find = resultSet.getInt("id_user_topic");
-
                 id_user_topic.add(id_find);
             }
         } catch (SQLException e) {
@@ -69,6 +78,9 @@ public class SQLOperations {
 
     /**
      * Function that add a subscribed to a topic in DB
+     * @param id_user - used to identify the user
+     * @param id_topic - used to identify the topic
+     * @return true or false
      */
     public Boolean subscribeTopicSQL(Integer id_user, Integer id_topic){
         boolean ok=false;
@@ -87,6 +99,8 @@ public class SQLOperations {
 
     /**
      * Function to get the messages and user from a topic from DB
+     * @param id_topic - used to identify the topic
+     * @return the message and the user who posted the message
      */
     public ArrayList<MessageUser> getMessagesAndUsersSQL(Integer id_topic){
         ArrayList<MessageUser> messageUsersFirst = new ArrayList<>();
@@ -128,6 +142,10 @@ public class SQLOperations {
 
     /**
      * Function that add message in a DB
+     * @param id_user - used to identify the user
+     * @param id_topic - used to identify the topic
+     * @param message - the string containing the message to be added in the database
+     * @return true or false
      */
     public Boolean addMessageSQL(Integer id_user,Integer id_topic, String message){
         boolean ok=false;

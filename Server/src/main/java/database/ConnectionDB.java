@@ -10,14 +10,7 @@ public class ConnectionDB {
     private static Connection connection;
 
     /**
-     * Constructor that connect the application to the DB
-     */
-    public ConnectionDB(Integer i){
-        connect();
-    }
-
-    /**
-     * Constructor without parameters that sets connection to null
+     * Constructor
      */
     public ConnectionDB(){
     }
@@ -25,7 +18,7 @@ public class ConnectionDB {
     /**
      * Function that connect the application to the DB using JDBC
      */
-    Connection connect() {
+    public Connection connect() {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost/example", "root", "1q2w3e");
             return connection;
