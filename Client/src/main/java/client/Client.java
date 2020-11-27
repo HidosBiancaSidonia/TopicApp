@@ -1,7 +1,7 @@
 package client;
 
-import util.MessageUser;
 import model.Topic;
+import util.MessageUser;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

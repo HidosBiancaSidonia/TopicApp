@@ -1,7 +1,8 @@
 package server;
 
 import database.SQLOperations;
-import model.*;
+import model.Topic;
+import model.User;
 import util.MessageUser;
 
 import java.io.EOFException;
