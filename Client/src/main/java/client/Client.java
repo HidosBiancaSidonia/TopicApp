@@ -20,6 +20,9 @@ public class Client implements Serializable {
     private static final Scanner scannerWithDelimiter = new Scanner(System.in).useDelimiter("\n");
     private static Integer id_topic=0;
 
+    /**
+     * Constructor 
+     */
     public Client()  {
         try {
             Socket socketClient = new Socket("localhost", 4133);
@@ -41,6 +44,9 @@ public class Client implements Serializable {
 
     /**
      * Function that gets the username and password to perform the login in the Server class
+     * @param username - the username with which the client identifies himself
+     * @param password - the password with which the client identifies himself
+     * @throws IOException this exception occurs when the username and the password are empty
      */
     private static void doLogin(String username, String password) throws IOException {
         out.writeObject("login");
@@ -73,6 +79,11 @@ public class Client implements Serializable {
 
     /**
      * Function that show all topics using the function from the Server class
+     * @param i used to differentiate when accessing this method
+     *          i = 1 - when accessing topics after logging in
+     *          i = 2 - accessing the method  second time, third time, and so on
+     * @throws IOException used for writeObject()
+     * @throws ClassNotFoundException used for readObject()
      */
     private static void showAllTopics(int i) throws IOException, ClassNotFoundException {
         out.writeObject("showAllTopics");
@@ -95,6 +106,10 @@ public class Client implements Serializable {
     /**
      * Function that checks if the user is subscribed to a certain topic identified
      * by the id parameter using the function from the Server class
+     * @param id represents the id of the chosen topic
+     * @return the string received from the server
+     * @throws IOException used for writeObject()
+     * @throws ClassNotFoundException used for readObject()
      */
     private static String showTopic(Integer id) throws IOException, ClassNotFoundException {
         out.writeObject("showTopic");
@@ -110,7 +125,10 @@ public class Client implements Serializable {
 
     /**
      * Function that subscribes the user to a certain topic identified
-     *  by the id parameter using the function from the Server class
+     * by the id parameter using the function from the Server class
+     * @param id represents the id of the chosen topic
+     * @return the string received from the server
+     * @throws IOException used for writeObject()
      */
     private static String subscribeTopic(Integer id) throws IOException {
         out.writeObject("subscribeTopic");
@@ -126,6 +144,9 @@ public class Client implements Serializable {
     /**
      * Function that show all messages in a topic identified
      * by the id parameter using the function from the Server class
+     * @param id represents the id of the chosen topic
+     * @throws IOException used for writeObject()
+     * @throws ClassNotFoundException used for readObject()
      */
     private static void showMessages(Integer id) throws IOException, ClassNotFoundException {
         out.writeObject("showMessages");
@@ -145,6 +166,10 @@ public class Client implements Serializable {
     /**
      * Function that gets the id_topic and message to perform the add of a new message
      * in a certain topic using Server class
+     * @param id represents the id of the chosen topic
+     * @param message - message to add to the chosen topic
+     * @return the string received from the server
+     * @throws IOException used for writeObject()
      */
     private static String addMessages(Integer id, String message) throws IOException {
         out.writeObject("addMessages");
@@ -318,6 +343,7 @@ public class Client implements Serializable {
     /**
      * Function that shows the options of a menu and which let the user select
      * a certain option if it's correct.
+     * @param newMenu - the menu that is activated
      */
     private static void activateMenu(Menu newMenu) {
         System.out.println(newMenu.generateText());

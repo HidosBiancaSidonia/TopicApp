@@ -10,6 +10,7 @@ public class Menu {
 
     /**
      * Constructor
+     * @param name represents the menu name
      */
     public Menu(String name) {
         this.name = name;
@@ -37,6 +38,7 @@ public class Menu {
 
     /**
      * Function that execute the action choice if it's correct
+     * @param actionNumber is used to select the desired option
      */
     void executeAction(int actionNumber) {
         int effectiveActionNumber = actionNumber - 1;
